@@ -1,0 +1,32 @@
+apiVersion: v1
+entries:
+  outline:
+  - apiVersion: v1
+    appVersion: 0.69.1
+    created: "2024-09-24T12:24:27.102386864Z"
+    description: The outline helm chart to deploy outline in kubernetes clusters.
+    digest: 2a1cf91c47853efa19c2d59a32c269e6f476b852a834904aa26e6959e4b38027
+    home: https://encircle360.com
+    keywords:
+    - outline
+    - wiki
+    - helm
+    - chart
+    - kubernetes
+    - s3
+    - minio
+    - postgresql
+    - mongodb
+    - knowledge
+    maintainers:
+    - email: hello@encircle360.com
+      name: encircle360 GmbH
+      url: https://encircle360.com
+    name: outline
+    sources:
+    - https://gitlab.com/encircle360-oss/helm-charts/outline
+    - https://github.com/encircle360-oss/outline-helm-chart
+    urls:
+    - https://github.com/valitydev/outline-helm/releases/download/outline-0.0.8/outline-0.0.8.tgz
+    version: 0.0.8
+generated: "2024-09-24T12:24:27.102396953Z"
