@@ -31,6 +31,3 @@ jobs:
         uses: amalgamm/chart-releaser-action@v1.6.3
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        with:
-          skip_existing: true
-          packages_with_index: true
