@@ -3,6 +3,31 @@ entries:
   outline:
   - apiVersion: v1
     appVersion: 0.79.1
+    created: "2024-09-25T15:18:32.063241876Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 10.12.2
+    - alias: redis
+      condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 15.4.1
+    - alias: minio
+      condition: minio.enabled
+      name: minio
+      repository: https://raw.githubusercontent.com/bitnami/charts/pre-2022/bitnami
+      version: 7.2.0
+    description: The outline helm chart to deploy outline in kubernetes clusters.
+    digest: 411dbf6ac726df856075ef9514f293c382332ea77159ec14924b14b406f90f4d
+    name: outline
+    urls:
+    - outline-0.0.11.tgz
+    version: 0.0.11
+  - apiVersion: v1
+    appVersion: 0.79.1
     created: "2024-09-25T09:21:40.018127202Z"
     description: The outline helm chart to deploy outline in kubernetes clusters.
     digest: a6ce31d83482a9a8c37e141c371f790741c30c9b6fb119cb890a6399f702cc7b
@@ -85,4 +110,4 @@ entries:
     urls:
     - https://github.com/valitydev/outline-helm/releases/download/outline-0.0.8/outline-0.0.8.tgz
     version: 0.0.8
-generated: "2024-09-25T09:21:40.018151016Z"
+generated: "2024-09-25T15:18:32.063257325Z"
