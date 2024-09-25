@@ -16,6 +16,7 @@ ingress:
     # cert-manager.io/cluster-issuer: "letsencrypt-staging"
   tls:
     enabled: false
+podLabels: {}
 
 redis:
   enabled: true
