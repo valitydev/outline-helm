@@ -14,28 +14,27 @@ spec:
       labels:
         app: {{ .Values.name }}
         release: {{ .Release.Name }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           env:
-            - name: SECRET_KEY
-              value: {{ .Values.secretKey | quote }}
-            - name: UTILS_SECRET
-              value: {{ .Values.utilsSecret | quote }}
             - name: PORT
               value: "3000"
             - name: COLLABORATION_URL
               value: ""
-          {{ if .Values.ingress.tls.enabled }}
+          {{- if .Values.ingress.tls.enabled }}
             - name: URL
               value: "https://{{ .Values.ingress.host }}"
-          {{ else }}
+          {{- else }}
             - name: URL
               value: "http://{{ .Values.ingress.host }}"
             - name: FORCE_HTTPS
               value: "false"
-          {{ end }}
+          {{- end }}
           {{ if .Values.postgresql.enabled }}
             - name: DATABASE_URL
               value: "postgres://{{ .Values.postgresql.postgresqlUsername}}:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.postgresqlDatabase }}"
@@ -80,58 +79,21 @@ spec:
             - name: {{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $secret }}
+                  name: {{ $.Values.name }}
                   key: {{ $key | quote }}
             {{- end }}
           {{- end }}
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.name }}
+                  key: secretKey
+            - name: UTILS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.name }}
+                  key: utilsSecret
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 3000
           resources: {{- toYaml .Values.resources | nindent 12 }}
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.name }}
-  labels:
-    app: {{ .Values.name }}
-    release: {{ .Release.Name }}
-spec:
-  ports:
-    - port: 80
-      targetPort: 3000
-      name: web
-  selector:
-    app: {{ .Values.name }}
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: {{ .Values.name }}
-  {{- if .Values.ingress.annotations }}
-  annotations:
-    {{- range $key, $value := .Values.ingress.annotations }}
-    {{ $key }}: {{ tpl $value $ | quote }}
-  {{- end }}
-  {{- end }}
-spec:
-  {{ if .Values.ingress.tls.enabled }}
-  tls:
-    - hosts:
-        - {{ .Values.ingress.host }}
-      secretName: {{ .Values.name }}-tls
-  {{ end }}
-  rules:
-    - host: {{ .Values.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.name }}
-                port:
-                  name: web
